@@ -99,7 +99,7 @@ npm run dev
 
 ## License
 
-MIT (see [license](LICENSE.md))
+See lincense under [LICENSE](LICENSE.md)
 
 ## Credits
 
