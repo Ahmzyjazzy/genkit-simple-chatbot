@@ -7,12 +7,12 @@ export function demoMetadata(): () => Promise<Metadata> {
         description:
             "A simple chatbot with streaming responses.",
         tags: ["chat"],
-        added: "2025-01-27",
+        added: "2025-10-02",
         complexity: 1,
         files: [
             {
                 name: "api/route.ts",
-                combine: ["@/common/genkit-beta.ts", "api/route.ts"],
+                combine: ["@/common/genkit-beta.ts", "@/api/simple-chatbot/route.ts"],
             },
         ],
     };
