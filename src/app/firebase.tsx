@@ -15,7 +15,9 @@ export default function WithFirebase({
 }) {
     const pathname = usePathname();
     useEffect(() => {
-        logEvent("screen_view", { firebase_screen: pathname });
+        logEvent("screen_view", {
+            firebase_screen: pathname
+        });
     }, [pathname]);
     return (
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

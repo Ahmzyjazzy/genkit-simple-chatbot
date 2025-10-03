@@ -37,12 +37,9 @@ let analytics: Analytics;
 if (typeof window !== "undefined") {
     analytics = getAnalytics(app);
 }
-export function logEvent(name: string, props: Record<string, any>) {
+export function logEvent(name: string, props: Record<string, unknown>) {
     if (!analytics) analytics = getAnalytics(app);
     analyticsLogEvent(analytics, name, props);
-}
-export function setCurrentScreen(name: string) {
-    if (!analytics) analytics = getAnalytics(app);
 }
 
 export const auth = initializeAuth(app, {

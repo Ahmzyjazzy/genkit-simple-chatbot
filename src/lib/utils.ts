@@ -1,8 +1,8 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-import type { GenerateStreamResponse, MessageData, Part } from "genkit";
-import { GenerateResponseChunkData } from "genkit/model";
+import type { GenerateRequest, GenerateStreamResponse, MessageData, Part } from "genkit";
+import type { GenerateResponseChunkData, GenerateResponseData } from "genkit/model";
 import { auth, logEvent } from "./firebase";
 import { getIdToken } from "firebase/auth";
 
@@ -13,13 +13,13 @@ export function cn(...inputs: ClassValue[]) {
 export function toReadableStream(
   response: GenerateStreamResponse,
   options?: {
-    transform?: (chunk: GenerateResponseChunkData & { output: unknown }) => any;
+    transform?: (chunk: GenerateResponseChunkData & { output: unknown }) => unknown;
     errorRef?: { current?: { message: string } };
   }
 ) {
   return new ReadableStream({
     async start(controller) {
-      function enqueue(data: any) {
+      function enqueue(data: unknown) {
         const out = `data: ${JSON.stringify(data)}\n\n`;
         controller.enqueue(out);
       }
@@ -88,9 +88,9 @@ export async function simplePost<ReqData = unknown, ResultData = unknown>(
 }
 
 export async function* post<
-  ReqData = unknown,
-  ChunkData = unknown,
-  ResultData = unknown
+  ReqData = GenerateRequest,
+  ChunkData = GenerateResponseChunkData,
+  ResultData = GenerateResponseData
 >(
   path: string,
   data: ReqData

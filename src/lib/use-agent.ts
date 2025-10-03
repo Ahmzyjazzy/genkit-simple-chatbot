@@ -104,14 +104,15 @@ export default function useAgent<T extends GenerateRequest = GenerateRequest>({
 
     const send = async (request: T, userMessage?: MessageData) => {
         userMessage =
-            userMessage || (request as any).prompt
-                ? { role: "user", content: (request as any).prompt }
-                : undefined;
+            userMessage || (request?.prompt
+                ? { role: "user", content: request.prompt }
+                : undefined);
         if (userMessage) {
             dispatch({ type: "ADD_USER_MESSAGE", payload: userMessage });
         }
 
         dispatch({ type: "SET_LOADING", payload: true });
+
         const stream = post<
             T,
             GenerateResponseChunkData,
@@ -120,6 +121,7 @@ export default function useAgent<T extends GenerateRequest = GenerateRequest>({
             ...request,
             messages: request.messages?.filter((m) => m.role !== "system"),
         });
+
         const newMessages: MessageData[] = [];
         for await (const chunk of stream) {
             if (chunk.message) {

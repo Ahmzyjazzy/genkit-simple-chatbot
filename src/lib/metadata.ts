@@ -5,7 +5,7 @@ export function demoMetadata(): () => Promise<Metadata> {
         id: "simple-chatbot",
         name: "Simple Chatbot",
         description:
-            "A simple chatbot with streaming responses and a customizable system message.",
+            "A simple chatbot with streaming responses.",
         tags: ["chat"],
         added: "2025-01-27",
         complexity: 1,

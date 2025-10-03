@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Code, RefreshCcw, Send, Sparkle } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import Markdown from "react-markdown";
-import DemoConfig from "@/lib/demo-config";
 import useAgent from "@/lib/use-agent";
 import type { MessageData, Part, Role } from "genkit";
 import CodeBlock from "./code-block";
@@ -41,26 +40,21 @@ function TextPart({ role, text }: { role: Role; text: string }) {
 
 export default function Chat({
     endpoint,
-    agent,
-    renderPart: customRenderPart,
-    data,
+    renderPart: customRenderPart
 }: {
-    agent?: ReturnType<typeof useAgent>;
-    endpoint?: string;
+    endpoint?: string,
     renderPart?: PartRender;
-    data?: Record<string, any>;
 }) {
     const renderPart: PartRender = (part, info: PartRenderInfo) => {
+        // Allow custom rendering of parts via props
         const custom = customRenderPart?.(part, info) || null;
         if (custom !== null) return custom;
+
         if (part.text)
             return <TextPart role={info.message.role} text={part.text} />;
     };
 
-    const { config } = useContext(DemoConfig);
-    const { messages, resetConversation, error, isLoading, send } =
-        agent ||
-        useAgent({
+    const { messages, resetConversation, error, isLoading, send } = useAgent({
             endpoint: endpoint!,
         });
 
@@ -75,10 +69,8 @@ export default function Chat({
 
     const handleSend = () => {
         return send({
-            system: config?.system,
             messages,
             prompt: [{ text: input }],
-            ...data,
         });
     };
 
@@ -102,7 +94,7 @@ export default function Chat({
                     <div
                         key={`${message.role}-${index}`}
                         className={cn(
-                            "flex flex-col", // Align items to the start
+                            "flex flex-col",
                             message.role === "user" ? "items-end" : "items-start"
                         )}
                     >
